@@ -6,6 +6,7 @@ overrides: []
 parserOptions:
   ecmaVersion: latest
 rules:
+"editor.tabSize": 4,
   indent:
     - error
     - tab

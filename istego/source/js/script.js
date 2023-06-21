@@ -4,47 +4,32 @@ const UI = {
     outputDiv: document.querySelector(".block-output"),
 };
 
-UI.inputDate.value = getCurrentDate();
 UI.inputDate.min = getCurrentDate();
+UI.inputDate.value = getCurrentDate();
 
 UI.inputBtn.addEventListener("click", startCounter);
 
 function startCounter() {
-    const selectedDate = new Date(UI.inputDate.value);
-    const currentDate = new Date();
-    const diffMs = selectedDate - currentDate;
+    
+        if (UI.inputDate.value === UI.inputDate.min) {
+            alert("выберите дату");
+            return;
+        }
 
-    if (diffMs < 0) {
-        UI.outputDiv.textContent = "Выбранная дата уже прошла";
-    } else {
-        setInterval(() => {
-            const receivedTime = calcDate(diffMs);
-            UI.outputDiv.textContent = `
-            ${receivedTime.years} лет 
-            ${receivedTime.days} дня 
-            ${receivedTime.hours} часов 
-            ${receivedTime.minutes} минут`;
-        }, 1000);
-        
-    }
-}
+        const selectedDate = new Date(UI.inputDate.value);
+        console.log(selectedDate);
+        const currentDate = new Date();
 
-function calcDate(diffMs) {
-    const diffSec = Math.floor(diffMs / 1000);
+        const diff = selectedDate - currentDate;
 
-    const years = Math.floor(diffSec / (60 * 60 * 24 * 365));
-    const days = Math.floor((diffSec % (60 * 60 * 24 * 365)) / (60 * 60 * 24));
-    const hours = Math.floor((diffSec % (60 * 60 * 24)) / (60 * 60));
-    const minutes = Math.floor((diffSec % (60 * 60)) / 60);
+        const daysLeft = Math.floor(diff / 1000 / 60 / 60 / 24);
+        const hoursLeft = Math.floor(diff / 1000 / 60 / 60) % 24;
+        const minutesLeft = Math.floor(diff / 1000 / 60) % 60;
+        const secondsLeft = Math.floor(diff / 1000) % 60;
 
-    const timeLeft = {
-        years,
-        days,
-        hours,
-        minutes,
-    };
+        UI.outputDiv.textContent = `Д: ${daysLeft} - Ч: ${hoursLeft} - М: ${minutesLeft} - С: ${secondsLeft} `;
 
-    return timeLeft;
+        setTimeout(startCounter, 1000);
 }
 
 function getCurrentDate() {
